@@ -2,15 +2,16 @@ import React ,{useEffect, useState} from 'react'
 import axios from 'axios';
 
 import { useParams} from 'react-router';
-import { List } from 'antd';
+import { List, Modal, Button } from 'antd';
 import { Link } from 'react-router-dom';
-function DetailPage(){
+function DetailPage(props){
 
     const { boardId } = useParams();
     const [BoardDetail, setBoardDetail] = useState([])
 
     
         
+    const { confirm } = Modal;
     
  
     useEffect(() => {
@@ -27,6 +28,41 @@ function DetailPage(){
        
     }, [])
  
+    const showDeleteConfirm=(e) =>{
+       
+        //console.log(target)
+        confirm({
+          title: 'Are you sure delete this task?',
+        //   icon: <ExclamationCircleOutlined />,
+          content: 'Some descriptions',
+          okText: 'Yes',
+          okType: 'danger',
+          cancelText: 'No',
+          onOk() {
+            onDelete()
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
+      }
+
+    const onDelete =(e) =>{
+       
+        //console.log(target)
+        axios.delete(`/api/boards/${boardId}`)
+        .then(response => {
+            if(response.data.success){
+               
+                props.history.push('/list')
+                
+            }else{
+                alert("삭제실패")
+            }
+        })
+       
+        
+    }
 
    
         return(
@@ -42,6 +78,7 @@ function DetailPage(){
                 
               
             <Link to ={`/modify/${boardId}`}>글수정</Link>
+            <button onClick={showDeleteConfirm}> Delete </button>
             </div>
         )
     

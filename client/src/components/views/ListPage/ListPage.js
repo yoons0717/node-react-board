@@ -1,30 +1,23 @@
 import React ,{useEffect, useState} from 'react'
 import axios from 'axios';
-import { Table,Popconfirm, message,Button } from 'antd';
+import { Table,Modal,Button } from 'antd';
 
-import { Link } from 'react-router-dom';
+import { Link ,withRouter} from 'react-router-dom';
 
 
 
 function ListPage(props){
    
-  
+    
+
+    const { confirm } = Modal;
+
     const [Board, setBoard] = useState([])
     
-    const onDelete =(e) =>{
-        const target = e.target.getAttribute('data-msg');
-        axios.delete(`/api/boards/${target}`)
-        .then(response => {
-            if(response.data.success){
-                alert("삭제 완료")
-                
-            }else{
-                alert("삭제실패")
-            }
-        })
-       
-        console.log(target)
-    }
+   
+
+    
+
     const columns = [
         {
         title: 'Title',
@@ -41,16 +34,9 @@ function ListPage(props){
         title: 'Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (text, record)=>
-               
-            <button onClick={onDelete} data-msg={`${record._id}`}> Delete </button>
-                
         }
     ]
+ 
 
 
     useEffect(() => {
@@ -75,9 +61,9 @@ function ListPage(props){
          
 
            <Table rowKey={record => record._id} columns={columns} dataSource={Board} />
-           
+            
         </div>
     )
 }
 
-export default ListPage
+export default withRouter(ListPage)
