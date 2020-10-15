@@ -45,10 +45,8 @@ const onSubmitHandler = (event) => {
     return(
         <div>
 
-        <h2>글작성</h2>
-            <Form style ={{ display: 'flex', flexDirection:'column'}}
-               
-            >
+            <h2>글작성</h2>
+            <Form>
                 <label>Title</label>
                 <Input value={Title} onChange={onTitleHandler}/>
                 <label>Writer</label>

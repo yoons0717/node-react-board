@@ -1,6 +1,6 @@
 import React ,{useEffect, useState} from 'react'
 import axios from 'axios';
-import { Table,Modal,Button } from 'antd';
+import { Table,Modal,Spin } from 'antd';
 
 import { Link ,withRouter} from 'react-router-dom';
 
@@ -8,15 +8,10 @@ import { Link ,withRouter} from 'react-router-dom';
 
 function ListPage(props){
    
-    
-
-    const { confirm } = Modal;
-
+    const [loading, setloading] = useState(true)
     const [Board, setBoard] = useState([])
     
    
-
-    
 
     const columns = [
         {
@@ -38,19 +33,21 @@ function ListPage(props){
     ]
  
 
-
     useEffect(() => {
         axios.get('/api/boards/list')
         .then(response => {
             if(response.data.success){
                 console.log(response.data)
                 setBoard(response.data.boards)
+                setloading(false)
             }else{
                 alert("글 리스트가져오기를 실패 했습니다.")
             }
         })
        
     }, [])
+    if (loading) 
+        return <div><Spin tip="Loading..."></Spin></div>
  
   
   
@@ -60,8 +57,8 @@ function ListPage(props){
             
          
 
-           <Table rowKey={record => record._id} columns={columns} dataSource={Board} />
-            
+           <Table rowKey={record => record._id} columns={columns} dataSource={Board}  />
+          
         </div>
     )
 }

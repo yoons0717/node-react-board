@@ -2,13 +2,13 @@ import React ,{useEffect, useState} from 'react'
 import axios from 'axios';
 
 import { useParams} from 'react-router';
-import { List, Modal, Button } from 'antd';
+import { List, Modal, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 function DetailPage(props){
 
     const { boardId } = useParams();
     const [BoardDetail, setBoardDetail] = useState([])
-
+    const [loading, setloading] = useState(true)
     
         
     const { confirm } = Modal;
@@ -20,7 +20,7 @@ function DetailPage(props){
             if(response.data.success){
                 console.log(response.data)
                 setBoardDetail(response.data.board)
-               
+                setloading(false)
             }else{
                 alert("글 리스트가져오기를 실패 했습니다.")
             }
@@ -63,7 +63,8 @@ function DetailPage(props){
        
         
     }
-
+    if (loading) 
+    return <div><Spin tip="Loading..."></Spin></div>
    
         return(
             <div>
